@@ -1,0 +1,226 @@
+EV charging session Dataset
+The dataset has 8530 charging sessions and 11 variables describing the behavior of the electric vehicles arriving
+at the parking lot.
+
+| Variable                | Description                                    |
+| ----------------------- | ---------------------------------------------- |
+| day                     | Day index of the year                          |
+| vehicles_generated_day  | Total number of EVs generated on that day      |
+| session                 | Charging session identifier                    |
+| assignment              | Parking/charger assignment identifier          |
+| connection_minute       | Arrival time of the EV (minutes from midnight) |
+| full_minute             | Time at which the vehicle reaches full charge  |
+| disconnection_minute    | Departure time of the EV                       |
+| connection_timestamp    | Arrival timestamp                              |
+| full_timestamp          | Timestamp when charging is completed           |
+| disconnection_timestamp | Departure timestamp                            |
+| energy_kwh              | Total charging energy requested by the EV      |
+
+Each charging session includes energy demand values ( enrgy_kWh )
+
+Building load Dataset
+The load profile dataset contains 8760 hourly entries, corresponding to one complete year of operation.
+
+| Variable           | Description                        |
+| ------------------ | ---------------------------------- |
+| timestamp          | Date and time                      |
+| base_profile_value | Original normalized profile value  |
+| scaled_power_kw    | Scaled building power demand       |
+| scaled_energy_kwh  | Hourly building energy consumption |
+
+
+What we want ?
+1) Build Electricity demand.
+2) EV charging demand.
+3) PV generation.
+4) Operation contraints of the charging infrastructure.
+
+The EV dateset has values for
+1) Arival time 
+2) Departure time 
+3) Charging energy requirements...
+
+The load dataset ~  background building consumption.
+
+So the time resolution Analysis:
+-------------------------------
+After converting the timestamp variables to datatime format, I observed that the two dataset operate at different
+temporal resolutions.
+
+EV Charging Dataset
+-------------------
+The EV Charging sessions contain arival and departure times with minute level precision. ~ The vehicle availability
+window is not aligned with hourly intervals.
+
+Building Load on the other hand is recorded in the hourly intervals. ~ Temporal resolution of 1 hour. td.
+
+Optimization Problem
+--------------------
+First of all a common discritization must be selected. ~ Hourly td = 1 hour.
+
+Charging Demand
+---------------
+Characterstics 
+| Metric                | Value     |
+| --------------------- | --------- |
+| Number of sessions    | 8530      |
+| Mean energy demand    | 11.21 kWh |
+| Median energy demand  | 10 kWh    |
+| Minimum energy demand | 0 kWh     |
+| Maximum energy demand | 57 kWh    |
+
+
+ a) Charging is between 6 to 14 kWh 
+ b) A few high sessions also exist reaching upto 57kWh
+
+ Daily EV Arrivals 
+------------------
+| Metric          | Value |
+| --------------- | ----- |
+| Number of days  | 365   |
+| Mean EVs/day    | 23.37 |
+| Median EVs/day  | 27    |
+| Minimum EVs/day | 5     |
+| Maximum EVs/day | 35    |
+
+Vehicle Analysis
+----------------
+| Metric                     | Value |
+| -------------------------- | ----- |
+| Mean generated vehicles    | 28.09 |
+| Median generated vehicles  | 30    |
+| Maximum generated vehicles | 35    |
+
+~ typical operation around 30 vehicle per day
+
+
+The data analysis ~ Parking durations
+-------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The parking duration = disconnection_minute - connection_minute
+converted from minutes to hours.
+
+The results:
+Most EVs remain parked for several hours, mainly between 6h to 10h   ~ Chraging demands are flexible 
+
+So what we want is that, instead immediately after the arival, car doesn't need to charge, we can shift it.
+
+In the optimization problem, each EV will have a constraint of the form:
+
+connection_time <= charging_time <= disconnection_time
+
+and the total delivered energy must satisfy the required session energy.
+
+Charding Duration Analysis:
+---------------------------
+```````````````````````````
+charging duration = full_minute - connection_minute ~ charing duration =3.88 h median charing duration = 3 .50 h 
+max charging duration = 15.78h    ~ so we converted the time frame to hours.
+
+
+interpretation ~ Most vehicle 2-5 hours of active Charging.
+Compare the charging and parking duration 
+7.12 - 3.88 = 3.24 hrs ~ mainly vehilce spend 3.24 hours after reaching their State of charge.
+
+
+# flexibility analysis:
+----------------------
+||||||||||||||||||||||
+flexibility = parking duration - charging duration
+
+The majority of EV charging sessions possess several hours of scheduling flexibility, this means that charging 
+does not necessarily need to begin immediately after vehicle arrival. ~ As by the supervisor.
+
+
+Instead, charging power can be shifted within the available flexibility window to:
+
+- maximize self-consumption of solar PV generation,
+- reduce peak power demand,
+- reduce electricity costs,
+- improve overall parking lot energy management.
+
+
+Donc for most vehicle we have 1 - 5 hours of flexibility, ~ the time stamps.
+
+
+
+EV Energy demand analysis:
+-------------------------
+#########################
+The annual EV charging demand is:
+
+95,663 kWh/year   ~ The energy demand distribution is right skewed
+
+Observations from the histogram:
+
+- Most charging sessions require between 5 and 15 kWh.
+- The median charging demand is around 10 kWh.
+- A smaller number of sessions require more than 20 kWh.
+- The largest charging session requires 57 kWh.
+
+~ Most vehilce only require partial charging
+
+###############################################################################################################
+
+                                   Preparing data for omptimization
+
+################################################################################################################
+
+So what we want is that convert the EV session data into a time-indexed charging demand model that can be used
+for optimization solver.
+
+Inputs:
+a) Arrival time 
+b) Departure time
+c) Energy requirements
+d) Building electrical load
+
+Outputs:
+- Optimization-ready hourly scheduling framework.
+
+The building load is spanned over one complete calender year ~ 8760  Donc one full year.
+
+Observation:
+The annual building energy consumption and the annual EV charging demand are both equal to approximately 95.7 MWh/year
+
+
+Current understanding:
+
+Building load:
+- Average power ≈ 10.9 kW
+- Peak power ≈ 25 kW
+- Annual energy ≈ 95.7 MWh
+
+EV fleet:
+- Average session energy ≈ 11.2 kWh
+- Average charging time ≈ 3.9 h
+- Average parking time ≈ 7.1 h
+- Average flexibility ≈ 3.2 h
+- Annual energy ≈ 95.7 MWh
+
+The daily demand profile exhibits a recurring weekly pattern with significant reductions in demand approximately 
+every seven days. This likely corresponds to weekends, when fewer vehicles are present.
+
+The EV parking facility therefore experiences both daily and weekly variability, making smart charging scheduling 
+relevant for peak-load management..
+
+Representative Scenarios:
+-------------------------
+-------------------------
+
+Three representative EV demand days were selected:
+
+1. Low-demand scenario:
+   Day 106, EV energy = 37 kWh
+
+2. Medium-demand scenario:
+   Day 20, EV energy = 303 kWh
+
+3. High-demand scenario:
+   Day 95, EV energy = 509 kWh
+
+These days will be used to compare:
+- uncontrolled as-soon-as-possible charging
+- optimized smart charging
+- PV+BESS operation with and without controllable EV charging 
