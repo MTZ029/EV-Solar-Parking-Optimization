@@ -1,0 +1,28 @@
+Notebook 12 – Multi-scenario comparison
+
+The integrated LP was repeated for three representative EV charging days:
+low-demand, medium-demand, and high-demand.
+
+Results show that the medium-demand day has the highest cost, even though it does not have the highest EV demand.
+This happens because PV production is very low on that day, forcing the system to rely heavily on grid import.
+
+The high-demand day has the largest EV energy demand, but the cost remains low because PV production is also high
+and the optimizer can use PV and BESS effectively.
+
+This confirms that the operational benefit of smart charging depends not only on EV demand, but also on the
+correlation between EV demand, PV availability, building load and electricity prices.
+
+Scenario plot interpretation
+
+The medium-demand scenario produces the highest operating cost and grid import.
+
+This shows that EV demand alone does not determine system performance. The medium day has moderate EV charging
+demand, but very low PV production, which forces the optimizer to import most of the required energy from the grid.
+
+The high-demand scenario has the largest EV demand, but it also has high PV production. Therefore, the optimizer
+can supply much of the demand using local PV generation and the battery.
+
+The low-demand scenario has low EV demand and significant PV production, leading to low cost but also more PV
+export.
+
+Battery throughput remains similar across scenarios, indicating that the BESS is actively used in all cases.

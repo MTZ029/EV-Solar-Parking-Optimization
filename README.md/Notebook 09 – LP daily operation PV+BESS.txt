@@ -1,0 +1,34 @@
+A first linear programming formulation was implemented for the daily operation of a PV+BESS system.
+Inputs:
+- Building load
+- PV production
+- Electricity price
+- Fixed PV size
+- Fixed BESS capacity
+
+Decision variables:
+- Battery charging power
+- Battery discharging power
+- Battery state of charge
+- Grid import
+- Grid export
+
+Constraints:
+- Power balance at every hour
+- Battery SOC dynamics
+- SOC minimum and maximum limits
+- Charging and discharging power limits
+- Non-negative grid import/export
+
+Result:
+The LP was solved successfully using scipy.optimize.linprog with the HiGHS backend.
+
+The optimizer charges the battery during periods of high PV production and discharges it when PV is low and grid
+energy would otherwise be required.
+
+The SOC remains inside the defined limits and reaches both minimum and maximum values, showing that the battery
+capacity is actively used.
+
+This confirms that the LP formulation is working and can be extended by adding EV charging decision variables.
+
+The Situation is not that straight, we are currently working with lingprog.

@@ -1,0 +1,57 @@
+Integrated PV + BESS + Flexible EV Charging LP
+
+A complete daily LP optimization model was developed.
+
+Components:
+- Building electrical load
+- PV generation
+- Battery Energy Storage System
+- Flexible EV charging
+- Electricity prices
+
+Decision variables:
+- EV charging powers
+- Battery charging powers
+- Battery discharging powers
+- Battery state of charge
+- Grid import powers
+- Grid export powers
+
+Constraints:
+- Hourly power balance
+- EV charging energy requirements
+- EV connection windows
+- Battery SOC dynamics
+- Battery power limits
+- SOC minimum and maximum limits
+- Non-negative grid import/export
+
+Objective:
+- Minimize electricity purchase cost from the grid.
+
+This notebook represents the first fully integrated optimization model combining all system components.
+Results:
+
+The integrated LP successfully coordinated PV generation,
+battery storage and EV charging.
+
+Observed behaviour:
+
+- Battery discharged during periods with low available PV.
+- Battery charged during hours with PV surplus.
+- Battery discharged again during expensive evening hours.
+- EV charging was shifted toward hours with high PV production.
+- Grid imports were reduced during expensive periods.
+- SOC limits were always respected.
+
+The obtained schedule is physically realistic and economically meaningful.
+
+The optimization successfully combines:
+
+• Building demand
+• PV generation
+• Battery storage
+• Flexible EV charging
+• Electricity market prices
+
+into a single optimal scheduling framework.

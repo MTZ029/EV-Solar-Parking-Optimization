@@ -1,0 +1,24 @@
+Notebook 10 – Flexible EV charging LP
+
+A linear programming model was formulated for smart EV charging.
+
+Decision variables:
+- Charging power of each EV during each hour.
+
+Objective:
+- Minimize total charging cost using hourly electricity prices.
+
+Constraints:
+- EV charging only allowed while connected.
+- Maximum charger power limit.
+- Required charging energy must be delivered before departure.
+
+Results:
+The optimizer successfully shifted charging away from arrival times and concentrated charging during the cheapest
+hours of the day.
+
+Compared to ASAP charging, the charging profile changed significantly while delivering the same total energy
+demand.
+
+This demonstrates the value of EV flexibility and provides the basis for integration with PV generation and
+    battery storage.

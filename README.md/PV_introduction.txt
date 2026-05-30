@@ -140,3 +140,20 @@ For Day 95:
 
 This shows that ASAP charging already has strong PV overlap, but approximately 99.5 kWh still comes from the 
 grid. Smart charging can attempt to shift this remaining grid-supplied EV energy toward PV-surplus hours.
+
+
+Scenario comparison:
+-------------------
+-------------------
+
+Three representative days were evaluated.
+
+The low-demand day has enough PV surplus to cover all EV charging demand.
+
+The medium-demand day has no PV surplus after building load, so ASAP EV charging is fully supplied from the grid.
+
+The high-demand day has strong PV availability and approximately 80.5% of EV charging is supplied by PV, while
+around 99.5 kWh still comes from the grid.
+
+This confirms that optimization should be tested across multiple daily scenarios, because the value of smart
+charging depends on both EV demand and PV availability.
