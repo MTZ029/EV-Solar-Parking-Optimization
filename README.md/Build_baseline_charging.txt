@@ -1,0 +1,57 @@
+High demand scenario (Day 95)
+
+Number of EV sessions: 35 
+
+Total Ev charging energy: 509 kWh 
+
+Average energy per vehicle: 509 / 35  = 14.5 kWh 
+
+This day represents the maximum daily EV charging demand observed in the dataset, and would be used as a stress 
+test scenario for optimization.  ~ Like the maximum energy used later we can optimize the value.
+
+ASAP Charging Baseline
+
+Assumptions:
+- Charging begins immediately after arrival.
+- Charging power is fixed at 7 kW.
+- Charging continues until the requested energy is delivered.
+
+This charging strategy represents an uncontrolled charging scenario and serves as the reference case for future
+ optimization we are going to do afterwards.
+
+ Baseline ASAP Charging Results:
+ ###############################
+
+For the selected high-demand day (Day 95), an uncontrolled charging strategy was simulated.
+
+Assumptions:
+- All EVs start charging immediately upon arrival.
+- Charging power is fixed at 7 kW. and we have 35 sessions.
+- Charging continues until the required energy is delivered.
+
+Observations:
+- Charging demand is concentrated during the morning hours.
+- Peak EV charging load reaches approximately 140 kW.
+- Most charging activity occurs between 06:00 and 15:00.
+
+################################################################################################################
+                                     Combined_Load_profile
+###############################################################################################################
+Notebook 03 objective:
+
+Combine the building electrical demand with the uncontrolled EV charging demand.
+
+The resulting profile represents the total power demand that would be observed if all EVs begin charging 
+immediately upon arrival.
+
+This combined profile will serve as the reference case before introducing photovoltaic generation, battery 
+storage, and optimized charging schedules.
+
+####################### Combined Demand ####################################
+The uncontrolled ASAP charging strategy creates a large morning demand peak. 137 kW
+
+While the building demand remains relatively low throughout the day (approximately 6–18 kW), the simultaneous
+ charging of EVs increases the total demand to approximately 137 kW.
+
+This demonstrates the need for coordinated charging strategies in order to reduce peak power requirements and 
+better utilize local energy resources such as photovoltaic generation and battery storage systems.

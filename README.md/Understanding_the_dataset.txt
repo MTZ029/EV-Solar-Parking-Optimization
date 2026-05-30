@@ -224,3 +224,6 @@ These days will be used to compare:
 - uncontrolled as-soon-as-possible charging
 - optimized smart charging
 - PV+BESS operation with and without controllable EV charging 
+
+
+Note: This is only the interpretation of the data available.

@@ -1,0 +1,142 @@
+Now this part incorporates for PV produciton too as a part of the EV + Load 
+How much of the EV charging could be supplied directly by PV ? ~ That's the question we are catering here.
+
+
+Objective:
+Understand the yearly datasets provided for the original PV-BESS-load optimization problem.
+
+Files imported:
+- load_yearly.mat
+- PV_production_yearly.mat
+- prices_yearly.mat
+
+Variables:
+- load_all_year: building electrical load [8760 hours]
+- zeta_PV: normalized PV production factor [8760 hours]
+- prices_all_year: electricity prices [8760 hours]
+
+Observation:
+The datasets cover a complete year with hourly resolution.
+
+These datasets will later be combined with the EV charging demand profile developed in the previous notebooks.
+
+Final optimization target:
+
+Building Load
++ EV Charging Demand
++ PV Production
++ Battery Storage
++ Electricity Prices
+
+The EV charging demand will be treated as a flexible controllable load that can be shifted within its charging window.
+
+Ev is not dominating the building.
+
+
+##############################################################################################################
+# Notebook 05 – PV sizing and self-consumption
+
+Results for a 300 kWp PV installation: S_pv = 300 KWp
+
+- Annual building load: 500,000 kWh
+- Annual PV production: 336,462 kWh
+- Direct PV self-consumption: 222,936 kWh
+- Grid import: 277,064 kWh
+- PV excess/export: 113,527 kWh 
+
+Key indicators:
+
+- PV self-consumption ratio: 66.3 %
+- Load coverage ratio: 44.6 %
+
+Interpretation:
+
+The PV system produces a significant amount of excess energy
+(approximately 113 MWh/year). This excess energy represents a
+potential source for smart EV charging and battery storage.
+Future optimization stages will attempt to shift EV charging
+towards periods of high PV generation and reduce energy imports
+from the grid.
+
+## Interpretation of Load vs PV Production
+
+The yearly comparison between building load and PV generation shows
+that PV production exceeds building demand during many spring and
+summer hours.
+
+These periods create excess PV energy that is currently exported
+to the grid.
+
+The annual PV excess is approximately:
+
+113,527 kWh/year
+
+This energy represents the main opportunity for:
+
+- Smart EV charging
+- Battery storage
+- Energy cost reduction
+
+The next project stages will attempt to utilize this excess energy
+instead of exporting it.
+
+PV Sizing Study Interpretation
+
+Increasing the PV size increases annual PV production and load coverage, but also increases excess PV energy.
+
+For small PV sizes, almost all PV production is consumed locally. For example, at 100 kWp, self-consumption is 
+98.8%.
+
+For larger PV systems, excess PV becomes significant. At 300 kWp, excess PV is about 113 MWh/year, while at 600
+kWp it increases to about 406 MWh/year.
+
+This shows that PV oversizing without battery storage or flexible EV charging leads to large energy exports.
+Therefore, EV smart charging and BESS operation are needed to improve PV utilization.
+
+
+################################################################################################################
+
+                                06_EV_PV_synergy.ipynb
+
+################################################################################################################
+
+EV-PV Synergy Observation
+
+The ASAP charging profile already shows a natural overlap with PV production.
+
+Most EVs arrive during the morning hours and begin charging immediately.
+
+Because PV production also starts in the morning, a significant amount of charging demand can already be supplied
+directly by solar energy.
+
+However, PV production remains very high between approximately 10:00 and 15:00 while EV charging demand decreases.
+
+This indicates that additional PV energy remains unused.
+
+Therefore, shifting part of the charging demand toward midday could increase PV self-consumption and reduce 
+excess PV export.
+
+This is the main motivation for smart EV charging optimization.
+
+########################################################################################################
+Corrected EV-PV interaction
+
+The first calculation incorrectly assumed that PV could be used directly by EVs without considering the building 
+load.
+
+The corrected approach gives priority to the building load:
+
+PV surplus after building = max(PV production - building load, 0)
+
+Only this surplus can be used by EVs.
+
+For Day 95:
+
+- EV charging demand: 509 kWh
+- PV surplus after building demand: 715.31 kWh
+- PV directly used by ASAP EV charging: 409.53 kWh
+- Grid energy used by EV charging: 99.47 kWh
+- Fraction of EV charging supplied by PV: 80.46%
+
+This shows that ASAP charging already has strong PV overlap, but approximately 99.5 kWh still comes from the 
+grid. Smart charging can attempt to shift this remaining grid-supplied EV energy toward PV-surplus hours.

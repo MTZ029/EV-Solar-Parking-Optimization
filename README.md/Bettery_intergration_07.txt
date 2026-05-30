@@ -1,0 +1,21 @@
+Simple BESS Price Arbitrage
+
+A rule-based battery controller was implemented.
+
+The battery charges when the electricity price is below a predefined threshold and discharges when the price exceeds a predefined threshold.
+
+The SOC trajectory shows the expected behavior:
+
+- Charging during low-price periods.
+- Discharging during high-price periods.
+- Respecting minimum and maximum SOC limits.
+
+The battery reaches both SOC boundaries several times during the day, confirming that the control logic is functioning correctly.
+
+However, the controller only uses electricity prices and ignores:
+
+- Building demand
+- PV production
+- EV charging demand
+
+Therefore, this serves only as a baseline strategy before integrating PV and EV information.
