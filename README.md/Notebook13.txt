@@ -1,0 +1,23 @@
+MATLAB reference result
+
+The original OSOPSS MATLAB yearly sizing script gives:
+
+- Optimal PV size: 536.797 kWp
+- Optimal BESS energy capacity: 389.2679 kWh
+- Optimal BESS converter power: 99.2633 kW
+- Grid connection enlargement: 50 kW
+- CAPEX: 742,580.2896 EUR
+- OPEX: 33,508.6057 EUR/year
+- Payback period: 14.6294 years
+- Solver time: 123.69 seconds
+
+Python Notebook 13 gives a similar order of magnitude:
+
+- Optimal PV size: 588.77 kWp
+- Optimal BESS energy capacity: 403.43 kWh
+- Optimal BESS converter power: 103.25 kW
+- Grid connection enlargement: 87.90 kW
+- Objective value: 63,166 EUR/year
+
+The difference must be checked by separating OPEX and CAPEX/N_DL in Python and comparing the exact constraints 
+with the MATLAB formulation.

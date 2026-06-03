@@ -1,0 +1,142 @@
+# Notebook 14 – Optimal Sized PV+BESS System with EV Charging
+
+## Objective
+
+The objective of this notebook is to evaluate EV charging strategies using the optimally sized PV+BESS 
+system obtained in Notebook 13.
+
+The following charging strategies are compared:
+
+1. ASAP (As-Soon-As-Possible) charging
+2. Flexible EV charging
+
+The analysis is performed for representative low-, medium-, and high-demand days.
+
+---
+
+## Input System
+
+The optimally sized PV+BESS system obtained from the OSOPSS joint sizing and scheduling optimization is:
+
+* PV size: 588.77 kWp
+* Battery energy capacity: 403.43 kWh
+* Battery converter size: 103.25 kW
+
+Battery parameters:
+
+* Charging efficiency: 90%
+* Discharging efficiency: 90%
+* Maximum depth of discharge: 85%
+
+---
+
+## Representative Scenarios
+
+Three representative days were selected:
+
+| Scenario      | Day |
+| ------------- | --- |
+| Low demand    | 106 |
+| Medium demand | 20  |
+| High demand   | 95  |
+
+These days represent different combinations of EV charging demand and PV availability.
+
+---
+
+## ASAP Charging
+
+In the ASAP charging strategy, each EV begins charging immediately after connection and continues until its
+required energy has been delivered.
+
+The charging profile is therefore determined solely by vehicle arrival and departure times.
+
+No optimization of charging times is performed.
+
+---
+
+## Flexible Charging
+
+In the flexible charging strategy, EV charging power becomes a decision variable of the optimization problem.
+
+The optimizer determines when charging should occur within each vehicle's parking window while satisfying:
+
+* Required charging energy
+* Vehicle availability constraints
+* Battery constraints
+* Power balance constraints
+
+The objective is to reduce operating costs and improve the utilization of locally generated PV energy.
+
+---
+
+## Results
+
+### Scenario Comparison
+
+| Scenario | ASAP Cost [EUR] | Flexible Cost [EUR] | Saving [EUR] |
+| -------- | --------------: | ------------------: | -----------: |
+| Low      |            0.00 |                0.00 |         0.00 |
+| Medium   |           94.22 |               92.62 |         1.60 |
+| High     |            0.00 |                0.00 |         0.00 |
+
+---
+
+### Grid Import Comparison
+
+| Scenario | ASAP Import [kWh] | Flexible Import [kWh] |
+| -------- | ----------------: | --------------------: |
+| Low      |              0.00 |                  0.00 |
+| Medium   |           1296.26 |               1296.26 |
+| High     |              0.00 |                  0.00 |
+
+---
+
+### Grid Export Comparison
+
+| Scenario | ASAP Export [kWh] | Flexible Export [kWh] |
+| -------- | ----------------: | --------------------: |
+| Low      |           1677.32 |               1677.32 |
+| Medium   |              0.00 |                  0.00 |
+| High     |           1400.27 |               1372.01 |
+
+---
+
+### EV Energy Delivered
+
+| Scenario | EV Energy [kWh] |
+| -------- | --------------: |
+| Low      |              37 |
+| Medium   |             303 |
+| High     |             509 |
+
+---
+
+## Discussion
+
+For the low-demand scenario, the optimally sized PV system produces significantly more energy than required 
+by the building and EVs. Consequently, both charging strategies achieve zero grid import and identical 
+operating costs.
+
+For the medium-demand scenario, flexible charging provides a small reduction in operating cost. 
+The optimizer shifts charging toward more favorable periods, reducing the total daily cost by approximately
+1.6 EUR.
+
+For the high-demand scenario, the large PV system is able to cover both building and EV demand. Therefore, 
+both strategies achieve zero grid import. However, flexible charging improves local PV utilization and 
+reduces exported energy from approximately 1400 kWh to 1372 kWh.
+
+---
+
+## Conclusions
+
+The optimally sized PV+BESS system obtained from the OSOPSS sizing procedure significantly reduces 
+dependence on grid electricity.
+
+Flexible EV charging provides the greatest benefit when PV generation is limited and grid energy must be 
+imported. When PV production is abundant, both charging strategies achieve similar operating costs, 
+although flexible charging can still improve self-consumption by shifting charging toward periods of high 
+solar production.
+
+The results indicate that the value of smart charging depends strongly on the relationship between EV 
+demand, PV generation, and electricity prices.
