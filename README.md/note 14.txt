@@ -1,28 +1,30 @@
-# Notebook 14 – Optimal Sized PV+BESS System with EV Charging
+# Notebook 14 – OSOPSS Day-Ahead Scheduling with ASAP EV Load
 
 ## Objective
 
-The objective of this notebook is to evaluate EV charging strategies using the optimally sized PV+BESS 
-system obtained in Notebook 13.
+The objective of this notebook is to extend the OSOPSS day-ahead PV+BESS scheduling procedure by including EV charging demand as a fixed, non-controllable load.
 
-The following charging strategies are compared:
+This follows the supervisor's recommendation:
 
-1. ASAP (As-Soon-As-Possible) charging
-2. Flexible EV charging
+* first use the optimally sized PV+BESS system obtained from the OSOPSS joint sizing procedure,
+* then include the EV ASAP charging profile as additional load,
+* then compute the best PV+BESS operation using the day-ahead scheduling approach from the course.
 
-The analysis is performed for representative low-, medium-, and high-demand days.
+In this notebook, EV charging is not yet optimized. It is treated as a fixed load profile.
 
 ---
 
 ## Input System
 
-The optimally sized PV+BESS system obtained from the OSOPSS joint sizing and scheduling optimization is:
+The optimally sized PV+BESS system obtained in Notebook 13 is used.
+
+System parameters:
 
 * PV size: 588.77 kWp
 * Battery energy capacity: 403.43 kWh
 * Battery converter size: 103.25 kW
 
-Battery parameters:
+Battery assumptions:
 
 * Charging efficiency: 90%
 * Discharging efficiency: 90%
@@ -32,111 +34,120 @@ Battery parameters:
 
 ## Representative Scenarios
 
-Three representative days were selected:
+Three representative EV demand days are considered:
 
-| Scenario      | Day |
-| ------------- | --- |
-| Low demand    | 106 |
-| Medium demand | 20  |
-| High demand   | 95  |
+| Scenario          | Day |
+| ----------------- | --: |
+| Low-demand day    | 106 |
+| Medium-demand day |  20 |
+| High-demand day   |  95 |
 
 These days represent different combinations of EV charging demand and PV availability.
 
 ---
 
-## ASAP Charging
+## Method
 
-In the ASAP charging strategy, each EV begins charging immediately after connection and continues until its
-required energy has been delivered.
+For each representative day, two cases are compared:
 
-The charging profile is therefore determined solely by vehicle arrival and departure times.
+1. Building load only
+2. Building load + ASAP EV charging profile
 
-No optimization of charging times is performed.
+The ASAP EV charging profile is added directly to the building demand. Therefore, the total load becomes:
 
----
+Total load = Building load + ASAP EV charging load
 
-## Flexible Charging
+The PV+BESS operation is then optimized using the OSOPSS day-ahead scheduling structure.
 
-In the flexible charging strategy, EV charging power becomes a decision variable of the optimization problem.
+The optimization includes:
 
-The optimizer determines when charging should occur within each vehicle's parking window while satisfying:
+* PV production
+* Battery charging
+* Battery discharging
+* Battery state of charge
+* Grid import
+* Grid export
+* Peak grid import
 
-* Required charging energy
-* Vehicle availability constraints
-* Battery constraints
-* Power balance constraints
-
-The objective is to reduce operating costs and improve the utilization of locally generated PV energy.
+The objective includes electricity import/export cost and peak grid power cost.
 
 ---
 
 ## Results
 
-### Scenario Comparison
+### Summary Table
 
-| Scenario | ASAP Cost [EUR] | Flexible Cost [EUR] | Saving [EUR] |
-| -------- | --------------: | ------------------: | -----------: |
-| Low      |            0.00 |                0.00 |         0.00 |
-| Medium   |           94.22 |               92.62 |         1.60 |
-| High     |            0.00 |                0.00 |         0.00 |
-
----
-
-### Grid Import Comparison
-
-| Scenario | ASAP Import [kWh] | Flexible Import [kWh] |
-| -------- | ----------------: | --------------------: |
-| Low      |              0.00 |                  0.00 |
-| Medium   |           1296.26 |               1296.26 |
-| High     |              0.00 |                  0.00 |
+| Scenario | EV energy [kWh] | Cost increase [EUR] | Grid import increase [kWh] | Peak increase [kW] | Grid export change [kWh] |
+| -------- | --------------: | ------------------: | -------------------------: | -----------------: | -----------------------: |
+| Low      |              37 |                2.61 |                       0.00 |               0.00 |                   -37.00 |
+| Medium   |             303 |               42.63 |                     308.11 |              12.01 |                     0.00 |
+| High     |             509 |               22.13 |                       0.00 |               0.00 |                  -509.00 |
 
 ---
 
-### Grid Export Comparison
+## Low-Demand Scenario
 
-| Scenario | ASAP Export [kWh] | Flexible Export [kWh] |
-| -------- | ----------------: | --------------------: |
-| Low      |           1677.32 |               1677.32 |
-| Medium   |              0.00 |                  0.00 |
-| High     |           1400.27 |               1372.01 |
+For the low-demand day, the EV charging demand is only 37 kWh.
 
----
+Results:
 
-### EV Energy Delivered
+* Cost increase: 2.61 EUR
+* Grid import increase: 0 kWh
+* Peak increase: 0 kW
+* Grid export reduction: 37 kWh
 
-| Scenario | EV Energy [kWh] |
-| -------- | --------------: |
-| Low      |              37 |
-| Medium   |             303 |
-| High     |             509 |
+Interpretation:
+
+The EV demand is small and is fully absorbed by local PV+BESS operation. It does not increase grid import or peak demand. Instead, the EV load reduces exported PV energy by approximately the same amount as the EV demand.
 
 ---
 
-## Discussion
+## Medium-Demand Scenario
 
-For the low-demand scenario, the optimally sized PV system produces significantly more energy than required 
-by the building and EVs. Consequently, both charging strategies achieve zero grid import and identical 
-operating costs.
+For the medium-demand day, the EV charging demand is 303 kWh.
 
-For the medium-demand scenario, flexible charging provides a small reduction in operating cost. 
-The optimizer shifts charging toward more favorable periods, reducing the total daily cost by approximately
-1.6 EUR.
+Results:
 
-For the high-demand scenario, the large PV system is able to cover both building and EV demand. Therefore, 
-both strategies achieve zero grid import. However, flexible charging improves local PV utilization and 
-reduces exported energy from approximately 1400 kWh to 1372 kWh.
+* Cost increase: 42.63 EUR
+* Grid import increase: 308.11 kWh
+* Peak increase: 12.01 kW
+* Grid export change: 0 kWh
+
+Interpretation:
+
+This is the most critical scenario. PV availability is limited on this day, so adding ASAP EV charging increases both grid import and peak grid demand. This leads to a clear increase in the daily operating cost.
+
+This scenario shows that when PV production is insufficient, non-controllable EV charging can increase both energy purchases and peak demand.
 
 ---
 
-## Conclusions
+## High-Demand Scenario
 
-The optimally sized PV+BESS system obtained from the OSOPSS sizing procedure significantly reduces 
-dependence on grid electricity.
+For the high-demand day, the EV charging demand is 509 kWh.
 
-Flexible EV charging provides the greatest benefit when PV generation is limited and grid energy must be 
-imported. When PV production is abundant, both charging strategies achieve similar operating costs, 
-although flexible charging can still improve self-consumption by shifting charging toward periods of high 
-solar production.
+Results:
 
-The results indicate that the value of smart charging depends strongly on the relationship between EV 
-demand, PV generation, and electricity prices.
+* Cost increase: 22.13 EUR
+* Grid import increase: 0 kWh
+* Peak increase: 0 kW
+* Grid export reduction: 509 kWh
+
+Interpretation:
+
+Although EV demand is high, PV production is also high on this day. The EV load is supplied locally by the PV+BESS system and does not increase grid import or peak demand.
+
+The main effect is that exported PV energy is reduced by approximately 509 kWh, which corresponds to the EV demand.
+
+This means that, for this day, every EV kWh is supplied locally instead of being exported to the grid.
+
+---
+
+## Main Conclusion
+
+The impact of ASAP EV charging depends strongly on the correlation between EV demand and PV availability.
+
+When PV production is abundant, EV charging mainly reduces exported PV energy and does not increase grid import.
+
+When PV production is limited, EV charging increases grid import, peak grid demand, and daily operating cost.
+
+This confirms the need for the next stage of the project: smart charging optimization, where EV charging is no longer treated as a fixed load but becomes a controllable decision variable in the day-ahead scheduling problem.

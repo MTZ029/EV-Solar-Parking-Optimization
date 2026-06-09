@@ -1,0 +1,42 @@
+For the medium-demand day, flexible EV charging reduces the total operating cost by 1.29 EUR and 
+slightly reduces grid import. However, peak grid import increases by about 5.94 kW. This shows that the 
+current objective mainly minimizes energy cost and does not strongly penalize peak demand. A stronger 
+peak penalty or explicit peak constraint may be needed if peak shaving is a priority.
+
+Notebook 15 – Scenario Results
+
+The OSOPSS day-ahead scheduling problem was extended by making EV charging a controllable optimization variable.
+
+Three representative scenarios were evaluated.
+
+Results:
+
+Low-demand day:
+ASAP cost = -67.84 EUR
+Flexible cost = -70.11 EUR
+Saving = 2.27 EUR
+Grid import reduction = 0 kWh
+Peak reduction = 0 kW
+
+Medium-demand day:
+ASAP cost = 200.09 EUR
+Flexible cost = 198.79 EUR
+Saving = 1.29 EUR
+Grid import reduction = 3.46 kWh
+Peak reduction = -5.94 kW
+
+High-demand day:
+ASAP cost = -37.22 EUR
+Flexible cost = -41.70 EUR
+Saving = 4.48 EUR
+Grid import reduction = 0 kWh
+Peak reduction = 0 kW
+
+Main conclusion:
+Flexible EV charging provides small but consistent economic benefits compared with ASAP charging.
+The benefit is limited because the optimally sized PV+BESS system already handles much of the demand
+effectively.
+
+For the medium-demand day, flexible charging reduces energy cost but increases peak grid demand. This shows
+that the current objective is cost-oriented and not peak-oriented. If peak shaving is required, an
+additional peak constraint or stronger peak penalty should be included.
