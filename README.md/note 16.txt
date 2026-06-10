@@ -1,0 +1,56 @@
+Notebook 16 – Scenario Analysis and Conclusions
+
+Objective
+
+The objective of this notebook is to compare the performance of flexible EV charging against ASAP charging for representative daily scenarios.
+
+Three representative days were evaluated:
+
+- Low-demand day (Day 106)
+- Medium-demand day (Day 20)
+- High-demand day (Day 95)
+
+Results
+
+Low-demand scenario:
+EV energy = 37 kWh
+Cost saving = 2.27 EUR/day
+Grid import reduction = 0 kWh/day
+Peak impact = 0 kW
+
+The PV+BESS system is sufficiently large to absorb the EV charging demand. Flexible charging mainly improves the utilization of locally generated energy and slightly improves economic performance.
+
+Medium-demand scenario:
+EV energy = 303 kWh
+Cost saving = 1.29 EUR/day
+Grid import reduction = 3.46 kWh/day
+Peak impact = +5.94 kW
+
+Flexible charging reduces operating cost and grid energy consumption. However, because the objective is 
+cost-oriented, charging is shifted toward cheaper periods, which increases peak demand.
+
+High-demand scenario:
+EV energy = 509 kWh
+Cost saving = 4.48 EUR/day
+Grid import reduction = 0 kWh/day
+Peak impact = 0 kW
+
+The high PV production allows most EV charging demand to be supplied locally. Flexible charging further 
+improves the economic performance by better aligning charging with PV generation.
+
+Conclusions
+
+Flexible EV charging consistently outperforms ASAP charging in terms of operating cost.
+
+The largest benefit is achieved when high PV production is available.
+
+The medium-demand scenario is the most critical operating condition because PV generation is limited and 
+grid dependency is highest.
+
+Cost-oriented charging does not necessarily reduce peak demand and may increase peak grid import.
+
+The optimally sized PV+BESS system absorbs a large fraction of EV charging demand, reducing the economic 
+impact of vehicle charging on the parking lot energy system.
+
+Overall, the results demonstrate the operational and economic benefits of predictive smart charging 
+compared with non-controllable ASAP charging.
